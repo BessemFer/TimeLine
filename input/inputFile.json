@@ -1,0 +1,39 @@
+{
+	"events": [{
+		"badgeClass": "primary",
+		"badgeIconClass": "glyphicon-check",
+		"title": "First heading",
+		"content": "Some awesome content."
+	}, {
+		"badgeClass": "success",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content.",
+		"when": "28/08/2016 00:55"
+	}, {
+		"badgeClass": "warning",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content."
+	}, {
+		"badgeClass": "danger",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content."
+	}, {
+		"badgeClass": "info",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content."
+	}, {
+		"badgeClass": "warning",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content."
+	}, {
+		"badgeClass": "peimary",
+		"badgeIconClass": "glyphicon-credit-card",
+		"title": "Second heading",
+		"content": "More awesome content."
+	}]
+}

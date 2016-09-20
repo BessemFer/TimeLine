@@ -1,0 +1,27 @@
+draft:
+
+Example of input:
+events:[
+{header: 'some text', -----
+body:'some text', -----
+instigator:'some text', -----
+importance:'some text', -----
+date:'some date', -----
+topic: 'some topic' -----
+product: 'some product',
+location: 'some city', -----
+discipline: 'some text' -----
+}
+
+primary : glyphicon-flag
+success: glyphicon-ok
+warning: glyphicon-alert
+danger: glyphicon-ban-circle
+info: glyphicon-info-sign
+
+horiz
+
+instigator
+product
+location
+discipline

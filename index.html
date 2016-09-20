@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 	<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css" integrity="sha384-MIwDKRSSImVFAZCVLtU0LMDdON6KVCrZHyVQQj6e8wIEJkW4tvwqXrbMIya1vriY" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+
+
+		<link rel="stylesheet" href="bower_components/angular-timeline/dist/angular-timeline.css"/>
+		<link rel="stylesheet" href="bower_components/angular-timeline/dist/angular-timeline-images.css" />
+	  	<link rel="stylesheet" href="bower_components/angular-timeline/dist/angular-timeline-bootstrap.css" />
+	  	<link rel="stylesheet" href="bower_components/angular-timeline/dist/angular-timeline-animations.css" />
+	  	
+	  	<link rel="stylesheet" href="css/animations.css" />
+	  	<link rel="stylesheet" href="css/event.css" />
+
+	  	<script src="bower_components/angular/angular.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+		<script src="bower_components/angular-timeline/dist/angular-timeline.js"></script>
+		<script src="bower_components/angular-sanitize/angular-sanitize.js"></script> <!-- installé avec : bower install angular-sanitize -->
+		<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script><!-- installé avec : bower install angular-ui-router -->
+		<script src="bower_components/angular-scroll-animate/dist/angular-scroll-animate.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js" integrity="sha384-THPy051/pYDQGanwU6poAc/hOdQxjnOEXzbT+OuUAFqNqFjL+4IGLBgCJC3ZOShY" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js" integrity="sha384-Plbmg8JY28KFelvJVai01l8WyZzrYWG825m+cZ0eDDS1f7d/js6ikvy1+X+guPIB" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js" integrity="sha384-ux8v3A6CPtOTqOzMKiuo3d/DomGaaClxFYdCu2HPMBEkf6x2xiDyJ7gkXU0MWwaD" crossorigin="anonymous"></script>
+
+
+	    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+	    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+   	    <!-- Angular Material Library -->
+	    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">		
+
+  		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	    <!-- Font-Awesome CSS (Optional) -->
+	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	    <!-- AngularJS CSP CSS -->
+	    <link rel="stylesheet" href="//rawgithub.com/angular/code.angularjs.org/master/1.2.16/angular-csp.css">
+	    <!-- ui-iconpicker CSS -->
+	    <link rel="stylesheet" href="//rawgithub.com/justin-lau/ui-iconpicker/v0.1.4/dist/styles/ui-iconpicker.min.css">
+	    <!-- AngularJS Script -->
+	    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	    <!-- Angular UI Boostrap Script -->
+	    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+	    <!-- ui-iconpicker Script -->
+	    <script type="text/javascript" src="//rawgithub.com/justin-lau/ui-iconpicker/v0.1.4/dist/scripts/ui-iconpicker.min.js"></script>
+    
+
+  	</head>	
+	
+
+	<body ng-app="myApp" ng-controller="myCtrl" ng-cloak>
+			<md-sidenav md-component-id="right" class="md-sidenav-right" >
+				<md-toolbar class="md-theme-indigo">
+					<h1 class="md-toolbar-tools">Filters</h1>
+				</md-toolbar>
+				
+				<br>
+				<md-content layout-padding>
+					<md-input-container class="md-block" >	
+				        <label>Search</label>
+				        <input type="text" ng-model="search"/>		       
+			        </md-input-container>
+					<h3><span>Importance</span></h3>
+					<div layout="column" layout-align="space-around">
+				    	<md-checkbox ng-repeat="importance in importanceTable" ng-model="importance.key" ng-init="importance.key=true">{{importance.name}}</md-checkbox>
+				    </div>
+			    </md-content>
+			</md-sidenav>
+		
+		
+		<div class="container-fluid ng-style: backgroundCSS">	
+			<timeline>
+				<label class="filter-title">Filters</label>
+				<div class="filterC" ng-click="openRightMenu()">
+					<i class="fa fa-filter" aria-hidden="true"></i>
+				</div>
+				<br><br><br><br><br>
+			    <timeline-event ng-repeat="event in events | orderBy:'-date' | filter: importanceFilter
+			    | filter : search" side="alternate" > <!-- boucle qui parcours le tableau events et a chaque fois remplis la variable event -->
+			    	<timeline-badge class="{{event.importance}} timeline-hidden"
+	                  when-visible="animateElementIn" when-not-visible="animateElementOut"><!-- when-visible = quand elle est apparente dans l'ecran -->
+			    		<i class="{{event.badgeIconClass}}" aria-hidden="true"></i> <!-- l'image dans le cercle / badge = le cercle -->
+			      	</timeline-badge>
+			      	
+		      		<timeline-panel class="{{event.importance}} timeline-hidden"
+	              		when-visible="animateElementIn" when-not-visible="animateElementOut">
+	              	
+	                  	<timeline-heading class="ng-scope">
+	                  		<div class="timeline-heading">
+	 			 				<h4 class="event-topic">{{event.topic}}</h4>
+	 			 				<small class="text-muted ng-binding">
+	    							&nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i>{{event.date}}
+	    						</small><br><br>
+								<p class="event-body">
+									<i class="event-header">{{event.header}}</i>
+									<br>
+									{{event.body}}
+								</p>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="{{event.targetModal}}">More details</button>
+								<div class="modal fade" id="{{event.modalID}}" tabindex="-1" role="dialog" aria-labelledby="{{event.modalLabelID}}" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+													<h4 class="modal-title" id="{{event.modalLabelID}}">{{event.topic}}</h4>
+											</div>
+											<div class="modal-body">
+												<small class="text-muted ng-binding">
+			            							&nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i>{{event.date}}
+			            						</small>
+			            						<br><br>
+			            						<p class="event-body">
+													<i class="event-header">{{event.header}}</i>
+													<br>
+													{{event.body}}
+												</p>
+												<hr>
+												<p class="event-informations">
+													<i>instigator:</i> {{event.instigator}}<br>
+													<i>product:</i> {{event.product}}<br>
+													<i>location:</i> {{event.location}}<br>
+													<i>discipline:</i> {{event.discipline}}<br>
+												</p>
+											</div>
+											<div class="modal-footer">
+													
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+	    						
+							</div>
+						</timeline-heading>	
+	              	</timeline-panel>
+			    </timeline-event>
+			</timeline>
+		</div>
+		<h1><font color="red">{{error}}</font></h1> <!-- affichage d'un message d'erreur -->
+
+		<script>
+
+		function badgePicker($importance){
+			if($importance=="primary")
+				return "fa fa-flag-o";
+			else if($importance=="success")
+				return "fa fa-check";
+			else if($importance=="warning")
+				return "fa fa-exclamation-triangle";
+			else if($importance=="danger")
+				return "fa fa-ban";
+			else if($importance=="info")
+				return "fa fa-info-circle";
+			else{
+				return "fa fa-bug";
+			}
+		}
+
+		function colorPicker($importance){
+			if($importance=="primary")
+				return "#2e6da4";
+			else if($importance=="success")
+				return "#3f903f";
+			else if($importance=="warning")
+				return "#f0ad4e";
+			else if($importance=="danger")
+				return "#d9534f";
+			else if($importance=="info")
+				return "#5bc0de";
+			else{
+				return "#999999";
+			}
+		}
+
+		var app = angular.module('myApp', [	'ngSanitize',
+											'ui.router',
+											'angular-timeline',
+											'angular-scroll-animate',
+											'ngAnimate',
+											'ngMaterial',
+											'ui-iconpicker'
+											]); //invocations des components pour les utiliser
+		app.controller('myCtrl',function($scope,$http,$mdSidenav){// parametre http pour pouvoir lire du fichier json
+			$scope.error="";
+			$scope.importanceIndice=0;
+			$http.get("input/inputFile2.json").then(function(response) { // get fichier json
+   				$scope.events = response.data.events; // remplir events avec le contenu du fichier json
+   				var count = $scope.events.length;
+   				//variables for the importance criteria filter
+   				var bool,j;
+   				var importanceTable = []; // importanceTable will be an array of distinct values of importance
+   				
+   				for(i=0;i<count;i++){
+   					$scope.events[i].badgeIconClass = badgePicker($scope.events[i].importance);
+
+					$scope.events[i].modalID="modal_"+i;
+					$scope.events[i].targetModal="#modal_"+i;
+					$scope.events[i].modalLabelID="modalLabel_"+i;
+   					// These are the instructions for the importance criteria filter
+   					
+   					bool=false;
+   					j=0;
+   				
+   					while((bool==false) && (j<importanceTable.length))
+   					{
+   						if (importanceTable[j].name == $scope.events[i].importance)
+   							bool = true;
+   						j++;
+   					}
+   					if (bool == false){
+   						importanceTable.push({name : $scope.events[i].importance, key : $scope.events[i].importance.replace(" ","")+"_", 
+   							badge : badgePicker($scope.events[i].importance), color : colorPicker($scope.events[i].importance)
+   						});
+   					}
+   					
+   				}
+   				$scope.importanceTable = importanceTable;
+
+
+			}, function(response) {
+		        $scope.error = "Something went wrong";
+    		});
+
+    		$scope.backgroundCSS={
+    			"background-color" : "aliceblue"
+    		}
+
+		
+			$scope.animateElementIn = function($el) {
+				$el.removeClass('timeline-hidden');
+				$el.addClass('bounce-in');
+			};
+
+			$scope.openRightMenu = function() {
+    			$mdSidenav('right').toggle();
+  			};
+
+			$scope.animateElementOut = function($el) { 
+				$el.addClass('timeline-hidden');
+				$el.removeClass('bounce-in');
+			};
+
+			$scope.importanceFilter = function($el){
+				for(i=0;i<$scope.importanceTable.length;i++){
+					if($scope.importanceTable[i].name == $el.importance){
+						return $scope.importanceTable[i].key;
+					}
+				}
+				return true;
+			}
+
+			$scope.locationFilter = function($el){
+				for(i=0;i<$scope.locationTable.length;i++){
+					if($scope.locationTable[i].name == $el.location){
+						return $scope.locationTable[i].key;
+					}
+				}
+				return true;
+			}
+
+			$scope.disciplineFilter = function($el){
+				for(i=0;i<$scope.disciplineTable.length;i++){
+					if($scope.disciplineTable[i].name == $el.discipline){
+						return $scope.disciplineTable[i].key;
+					}
+				}
+				return true;
+			}
+
+			$scope.productFilter = function($el){
+				for(i=0;i<$scope.productTable.length;i++){
+					if($scope.productTable[i].name == $el.product){
+						return $scope.productTable[i].key;
+					}
+				}
+				return true;
+			}
+
+			$scope.instigatorFilter = function($el){
+				for(i=0;i<$scope.instigatorTable.length;i++){
+					if($scope.instigatorTable[i].name == $el.instigator){
+						return $scope.instigatorTable[i].key;
+					}
+				}
+				return true;
+			}
+
+		});
+		</script>
+		
+		
+
+	</body>
+</html>
+
